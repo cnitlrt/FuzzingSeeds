@@ -1,0 +1,32 @@
+  dstlen = srclen / 3 * 4;
+  if (count > 0) {
+    dstlen += (srclen / count) + ((srclen % count) == 0 ? 0 : 1);
+  }
+  dst = str_len_ensure(mrb, dst, didx + dstlen);
+  dstptr = RSTRING_PTR(dst) + didx;
+
+  dstptr0 = dstptr;
+  for (column = 3; srclen >= 3; srclen -= 3, column += 3) {
+    l = (unsigned char)*srcptr++ << 16;
+    l += (unsigned char)*srcptr++ << 8;
+    l += (unsigned char)*srcptr++;
+
+    *dstptr++ = base64chars[(l >> 18) & 0x3f];
+    *dstptr++ = base64chars[(l >> 12) & 0x3f];
+    *dstptr++ = base64chars[(l >>  6) & 0x3f];
+    *dstptr++ = base64chars[ l        & 0x3f];
+
+    if (column == count) {
+      *dstptr++ = '\n';
+      column = 0;
+    }
+  }
+  // EI: here we write data since srclen == 1
+  if (srclen == 1) {
+    l = (unsigned char)*srcptr++ << 16;
+    *dstptr++ = base64chars[(l >> 18) & 0x3f];
+    *dstptr++ = base64chars[(l >> 12) & 0x3f];
+    *dstptr++ = '=';
+    *dstptr++ = '=';
+    column += 3;
+  }

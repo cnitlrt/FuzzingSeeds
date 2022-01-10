@@ -1,0 +1,11 @@
+class A
+  def to_int()
+    return "bla"
+  end
+end
+
+begin
+    puts 12345.to_s(A.new)
+rescue ArgumentError => e
+    puts e.to_s.partition(' ')[-1].partition(' ')[-1].to_i.to_s(16)
+end

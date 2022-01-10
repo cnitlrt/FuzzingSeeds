@@ -1,0 +1,4 @@
+( function ( { a =  arguments   }) {
+    const arguments
+}
+)

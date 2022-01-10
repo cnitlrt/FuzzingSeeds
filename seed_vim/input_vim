@@ -1,0 +1,10 @@
+" allow for vundle to handle filetypes
+set nocompatible
+
+" setup vim-plug
+call plug#begin('~/work/scripts/tools/vim/plug')
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim' 
+
+call plug#end()

@@ -1,0 +1,35 @@
+unsigned char c, ch[4];
+...
+padding = 0;
+while (slen >= 4) {
+    for (i = 0; i < 4; i++) {
+      do {
+        if (slen-- == 0)
+          goto done;
+        c = *sptr++;
+        // EI-DBG: Here we could skip the assignment, leaving ch[i] untouched
+      	if (c >= sizeof(base64_dec_tab))
+      	  continue;
+      	ch[i] = base64_dec_tab[c];
+      	if (ch[i] == PACK_BASE64_PADDING) {
+      	  ch[i] = 0;
+      	  padding++;
+      	}
+      } while (ch[i] == PACK_BASE64_IGNORE);
+    }
+
+    l = (ch[0] << 18) + (ch[1] << 12) + (ch[2] << 6) + ch[3];
+
+    if (padding == 0) {
+      *dptr++ = (l >> 16) & 0xff;
+      *dptr++ = (l >> 8) & 0xff;
+      *dptr++ = l & 0xff;
+    } else if (padding == 1) {
+      *dptr++ = (l >> 16) & 0xff;
+      *dptr++ = (l >> 8) & 0xff;
+      break;
+    } else {
+      *dptr++ = (l >> 16) & 0xff;
+      break;
+    }
+}

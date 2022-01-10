@@ -1,0 +1,16 @@
+ CASE(OP_GETUPVAR) {
+      
+      /* A B C  R(A) := uvget(B,C) */
+      int a = GETARG_A(i);
+      int b = GETARG_B(i);
+      int c = GETARG_C(i);
+      mrb_value *regs_a = regs + a;
+      struct REnv *e = uvenv(mrb, c);
+      if (!e) {
+        *regs_a = mrb_nil_value();
+      }
+      else {
+        *regs_a = e->stack[b];
+      }
+      NEXT;
+    }

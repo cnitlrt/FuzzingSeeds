@@ -1,0 +1,2 @@
+ensureputs 'hello world'rescue
+retry

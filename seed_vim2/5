@@ -1,0 +1,21 @@
+# Define an outer function
+def FirstFunction()
+  # Define an inner function
+  def SecondFunction()
+    # If the function has a body,
+    # a double free is detected.
+    # 
+    # Commenting out the next line
+    # turns this crash into a UAF
+    # (READ of size 14 in reserve_local.c)
+    AAAAA
+
+   # enddef followed by | or } followed by
+   # one or more characters, essentially
+   # starting a new command on the same line
+   # as the enddef.
+   enddef|BBBB
+enddef
+
+# Compile all functions
+defcompile

